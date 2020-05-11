@@ -1,22 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
-// Require the controllers WHICH WE DID NOT CREATE YET!!
 const resource_controller = require('../controllers/resource.controller');
 const login_controller = require('../controllers/login.controller');
-// Create a new Note
+// Create a new resource
 router.post('/resource', login_controller.checkToken, resource_controller.create);
 
-// Retrieve all Notes
-//router.get('/resource', resource.findAll);
+// Retrieve all resource
+router.get('/resource', resource_controller.findAll);
 
-// Retrieve a single Note with noteId
-//router.get('/resource/:resourceId', resource.findOne);
+// Retrieve a single resource with resourceId
+router.get('/resource/:id', resource_controller.findOne);
 
-// Update a Note with noteId
-//router.put('/resource/:resourceId', resource.update);
+// Update a resource with resourceId
+router.put('/resource/:id', resource_controller.update);
 
-// Delete a Note with noteId
+// Delete a resource with resourceId
 //router.delete('/resource/:resourceId', resource.delete);
 
 
