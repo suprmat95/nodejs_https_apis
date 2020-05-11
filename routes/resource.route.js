@@ -16,7 +16,7 @@ router.get('/resource/:id', resource_controller.findOne);
 router.put('/resource/:id', resource_controller.update);
 
 // Delete a resource with resourceId
-//router.delete('/resource/:resourceId', resource.delete);
+router.delete('/resource/:id', resource_controller.delete);
 
 
 module.exports = router;

@@ -17,9 +17,10 @@ let ResourceSchema = new Schema({
         }],
     created: {type: Number, required: false},
     modified: {type: Number, required: false},
+    deleted: {type: Number, required: false},
+
 
 });
-
 
 // Export the model
 module.exports = mongoose.model('Resource', ResourceSchema);
