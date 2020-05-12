@@ -55,6 +55,61 @@ describe('Resource creation test', function () {
             })
     });
 
+    it('Trying to create 2 resource with the same id', function (done) {
+
+        chai.request(app)
+            .post('/users')
+            .send({
+                name: randomName,
+                password: "password"
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.log('Error creation new user:  ' + err);
+                } else {
+                    chai.request(app)
+                        .get('/auth/login')
+                        .send({
+                            name: randomName,
+                            password: "password"
+                        })
+                        .end((err, res) => {
+                            if (err) {
+                                console.log('Error Login: ' + err);
+                            } else {
+                                console.log('Text ' + res.body.token); // outputs normal-looking response
+                                let token = res.body.token
+                                chai.request(app)
+                                    .post('/auth/resource')
+                                    .auth(token, {type: "bearer"})
+                                    .send({id:"id1",data: [{field3: "example"}]})
+                                    .end((err, res) => {
+                                        if (err) {
+                                            console.log('Error posting resource: ' + err);
+                                        } else {
+                                            chai.request(app)
+                                                .post('/auth/resource')
+                                                .auth(token, {type: "bearer"})
+                                                .send({id:"id1",data: [{field3: "example"}]})
+                                                .end((err, res) => {
+                                                    if (err) {
+                                                        console.log('Error posting resource: ' + err);
+                                                    } else {
+                                                        expect(res).to.have.status(500);
+                                                        expect(res.type, 'application/json');
+                                                        done();
+                                                    }
+                                                });
+                                        }
+                                    });
+
+                            }
+                        })
+                }
+
+
+            })
+    })
     it('Trying create a resource with a token not correct', function (done) {
         chai.request(app)
             .post('/auth/resource')
