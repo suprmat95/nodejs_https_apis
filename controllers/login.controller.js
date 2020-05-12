@@ -17,7 +17,7 @@ exports.login = function (req, res) {
             res.statusCode = 403;
             res.json({
                 success: false,
-                message: 'Incorrect username or password'
+                message: 'Username not present in db'
             });
         }
         else if(data.name === req.body.name) {

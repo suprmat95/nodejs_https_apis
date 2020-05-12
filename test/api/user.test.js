@@ -25,7 +25,7 @@ describe('User post', function ()  {
                done();
            })
     });
-    it('Posting users with same name', function (done) {
+    it('Posting users with same name, testing the check on user name', function (done) {
         chai.request(app)
             .post('/users')
             .send({
@@ -45,7 +45,7 @@ describe('User post', function ()  {
                 expect(res.type,'application/json');
                 done();
             })
-    })
+    });
 
 
 });
