@@ -9,13 +9,13 @@ router.post('/resource', login_controller.checkToken, resource_controller.create
 // Retrieve all resource
 router.get('/resource', resource_controller.findAll);
 
-// Retrieve a single resource with resourceId
+// Retrieve a single resource with id
 router.get('/resource/:id', resource_controller.findOne);
 
-// Update a resource with resourceId
+// Update a resource with id
 router.put('/resource/:id', resource_controller.update);
 
-// Delete a resource with resourceId
+// Delete a resource with id
 router.delete('/resource/:id', resource_controller.delete);
 
 
