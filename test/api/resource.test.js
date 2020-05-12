@@ -176,3 +176,212 @@ describe('Resource getting one test', function () {
 
     })
 });
+
+describe('Resource updating one test', function () {
+    let randomName = Str.random(15);
+    let randomid = cuid();
+
+    it('Create a user, then login and create a resource', function (done) {
+
+        chai.request(app)
+            .post('/users')
+            .send({
+                name: randomName,
+                password: "password"
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.log('Error creation new user:  ' + err);
+                } else {
+                    chai.request(app)
+                        .get('/auth/login')
+                        .send({
+                            name: randomName,
+                            password: "password"
+                        })
+                        .end((err, res) => {
+                            if (err) {
+                                console.log('Error Login: ' + err);
+                            } else {
+                                let token = res.body.token;
+                                console.log('Text ' + token); // outputs normal-looking response
+                                chai.request(app)
+                                    .post('/auth/resource')
+                                    .auth(token, {type: "bearer"})
+                                    .send({id: randomid, data: [{field3: "example"}]})
+                                    .end((err, res) => {
+                                        if (err) {
+                                            console.log('Error posting resource: ' + err);
+                                        } else {
+
+                                            chai.request(app)
+                                                .put('/auth/resource/' + randomid)
+                                                .auth(token, {type: "bearer"})
+                                                .send({id: randomid, data: [{field2: "example2"}]})
+                                                .end((err, res) => {
+                                                    if (err) {
+                                                        console.log('Error get resource: ' + err);
+                                                    } else {
+                                                        expect(res).to.have.status(200);
+                                                        expect(res.type, 'application/json');
+                                                        done();
+                                                    }
+                                                });
+                                        }
+                                    });
+                            }
+                        })
+                }
+
+            })
+    });
+
+    it('Try updating a resource with id not correct', function (done) {
+
+        chai.request(app)
+            .post('/users')
+            .send({
+                name: randomName,
+                password: "password"
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.log('Error creation new user:  ' + err);
+                } else {
+                    chai.request(app)
+                        .get('/auth/login')
+                        .send({
+                            name: randomName,
+                            password: "password"
+                        })
+                        .end((err, res) => {
+                            if (err) {
+                                console.log('Error Login: ' + err);
+                            } else {
+                                let token = res.body.token
+                                console.log('Text ' + token); // outputs normal-looking response
+                                chai.request(app)
+                                    .put('/auth/resource/' + cuid())
+                                    .auth(token, {type: "bearer"})
+                                    .send({data: [{field2: "example2"}]})
+                                    .end((err, res) => {
+                                        if (err) {
+                                            console.log('Error get resource: ' + err);
+                                        } else {
+                                            expect(res).to.have.status(404);
+                                            expect(res.type, 'application/json');
+                                            done();
+                                        }
+                                    });
+                            }
+                        })
+                }
+
+            })
+
+    })
+});
+
+
+describe('Resource deleting one test', function () {
+    let randomName = Str.random(15);
+    let randomid = cuid();
+
+    it('Creating a user, then login and creating a resource and deleting it', function (done) {
+
+        chai.request(app)
+            .post('/users')
+            .send({
+                name: randomName,
+                password: "password"
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.log('Error creation new user:  ' + err);
+                } else {
+                    chai.request(app)
+                        .get('/auth/login')
+                        .send({
+                            name: randomName,
+                            password: "password"
+                        })
+                        .end((err, res) => {
+                            if (err) {
+                                console.log('Error Login: ' + err);
+                            } else {
+                                let token = res.body.token;
+                                console.log('Text ' + token); // outputs normal-looking response
+                                chai.request(app)
+                                    .post('/auth/resource')
+                                    .auth(token, {type: "bearer"})
+                                    .send({id: randomid, data: [{field3: "example"}]})
+                                    .end((err, res) => {
+                                        if (err) {
+                                            console.log('Error posting resource: ' + err);
+                                        } else {
+
+                                            chai.request(app)
+                                                .delete('/auth/resource/' + randomid)
+                                                .auth(token, {type: "bearer"})
+                                                .end((err, res) => {
+                                                    if (err) {
+                                                        console.log('Error get resource: ' + err);
+                                                    } else {
+                                                        expect(res).to.have.status(200);
+                                                        expect(res.type, 'application/json');
+                                                        done();
+                                                    }
+                                                });
+                                        }
+                                    });
+                            }
+                        })
+                }
+
+            })
+    });
+
+    it('Try deleting a resource with id not correct', function (done) {
+
+        chai.request(app)
+            .post('/users')
+            .send({
+                name: randomName,
+                password: "password"
+            })
+            .end((err, res) => {
+                if (err) {
+                    console.log('Error creation new user:  ' + err);
+                } else {
+                    chai.request(app)
+                        .get('/auth/login')
+                        .send({
+                            name: randomName,
+                            password: "password"
+                        })
+                        .end((err, res) => {
+                            if (err) {
+                                console.log('Error Login: ' + err);
+                            } else {
+                                let token = res.body.token
+                                console.log('Text ' + token); // outputs normal-looking response
+                                chai.request(app)
+                                    .delete('/auth/resource/' + cuid())
+                                    .auth(token, {type: "bearer"})
+                                    .end((err, res) => {
+                                        if (err) {
+                                            console.log('Error get resource: ' + err);
+                                        } else {
+                                            expect(res).to.have.status(404);
+                                            expect(res.type, 'application/json');
+                                            done();
+                                        }
+                                    });
+                            }
+                        })
+                }
+
+            })
+
+    })
+});
