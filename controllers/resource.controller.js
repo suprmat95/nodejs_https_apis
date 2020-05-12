@@ -6,7 +6,9 @@ let cuid = require('cuid');
 exports.create = function (req, res) {
 // Validate request
     if(!req.body.data) {
-        return res.status(400).send({
+        res.statusCode = 400;
+        res.json({
+            success: false,
             message: "Resource content can not be empty"
         });
     }
@@ -20,7 +22,7 @@ exports.create = function (req, res) {
 
     });
 
-    // Save Note in the database
+    // Save resource in the database
     resource.save()
         .then(data => {
             res.send(data);
@@ -37,7 +39,7 @@ exports.findAll = (req, res) => {
             res.send(notes);
         }).catch(err => {
         res.status(500).send({
-            message: err.message || "Some error occurred while retrieving notes."
+            message: err.message || "Some error occurred while retrieving Resource."
         });
     });
 };
@@ -50,18 +52,26 @@ exports.findOne = (req, res) => {
     Resource.findOne({id: req.params.id})
         .then(resource => {
             if(!resource) {
-                return res.status(404).send({
+                res.statusCode = 404;
+                res.json({
+                    success: false,
                     message: "Note not found with id " + req.params.id
                 });
+                return
             }
             res.send(resource);
         }).catch(err => {
         if(err.kind === 'ObjectId') {
-            return res.status(404).send({
+            res.statusCode = 404;
+            res.json({
+                success: false,
                 message: "Note not found with id " + req.params.id
             });
+            return
         }
-        return res.status(500).send({
+        res.statusCode = 500;
+        res.json({
+            success: false,
             message: "Error retrieving note with id " + req.params.id
         });
     });
@@ -72,7 +82,7 @@ exports.update = (req, res) => {
     // Validate Request
     if(!req.body.data) {
         return res.status(400).send({
-            message: "Note content can not be empty"
+            message: "Resource content can not be empty"
         });
     }
     // Find note and update it with the request body
@@ -107,18 +117,18 @@ exports.delete = (req, res) => {
         .then(note => {
             if(!note) {
                 return res.status(404).send({
-                    message: "Note not found with id " + req.params.noteId
+                    message: "ResourceResource not found with id " + req.params.id
                 });
             }
-            res.send({message: "Note deleted successfully!"});
+            res.send({message: "Resource deleted successfully!"});
         }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                message: "Note not found with id " + req.params.noteId
+                message: "Resource not found with id " + req.params.id
             });
         }
         return res.status(500).send({
-            message: "Could not delete note with id " + req.params.noteId
+            message: "Could not delete note with id " + req.params.id
         });
     });
 };

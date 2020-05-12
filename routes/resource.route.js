@@ -7,16 +7,16 @@ const login_controller = require('../controllers/login.controller');
 router.post('/resource', login_controller.checkToken, resource_controller.create);
 
 // Retrieve all resource
-router.get('/resource', resource_controller.findAll);
+router.get('/resource', login_controller.checkToken, resource_controller.findAll);
 
 // Retrieve a single resource with id
-router.get('/resource/:id', resource_controller.findOne);
+router.get('/resource/:id',login_controller.checkToken, resource_controller.findOne);
 
 // Update a resource with id
-router.put('/resource/:id', resource_controller.update);
+router.put('/resource/:id',login_controller.checkToken, resource_controller.update);
 
 // Delete a resource with id
-router.delete('/resource/:id', resource_controller.delete);
+router.delete('/resource/:id', login_controller.checkToken, resource_controller.delete);
 
 
 module.exports = router;
