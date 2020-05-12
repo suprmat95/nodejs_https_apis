@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let ResourceSchema = new Schema({
-    id: {type: String, required: false, max: 100},
+    id: {type: String, required: false, max: 100, unique: true},
     data: [{
             field1: {type:[Number|String], required: false},
             field2: {type:[Number|String], required: false},

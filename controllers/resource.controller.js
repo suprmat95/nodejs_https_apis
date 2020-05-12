@@ -27,9 +27,12 @@ exports.create = function (req, res) {
         .then(data => {
             res.send(data);
         }).catch(err => {
-        res.status(500).send({
+        res.statusCode = 500;
+        res.json({
+            success: false,
             message: err.message || "Some error occurred while creating the Resource."
         });
+
     });
 };
 
@@ -38,9 +41,13 @@ exports.findAll = (req, res) => {
         .then(notes => {
             res.send(notes);
         }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving Resource."
+        res.statusCode = 500;
+        res.json({
+            success: false,
+            message: err.message || "Some error occurred while creating the Resource."
         });
+
+
     });
 };
 
@@ -81,9 +88,12 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     // Validate Request
     if(!req.body.data) {
-        return res.status(400).send({
+        res.statusCode = 400;
+        res.json({
+            success: false,
             message: "Resource content can not be empty"
         });
+        return
     }
     // Find note and update it with the request body
     Resource.findOneAndUpdate({id: req.params.id}, {
@@ -92,19 +102,28 @@ exports.update = (req, res) => {
     }, {new: true})
         .then(resource => {
             if(!resource) {
-                return res.status(404).send({
+                res.statusCode = 404;
+                res.json({
+                    success: false,
                     message: "Resource not found with id " + req.params.id
                 });
+                return
+
             }
             res.send(resource);
         }).catch(err => {
         if(err.kind === 'ObjectId') {
-            return res.status(404).send({
+            res.statusCode = 404;
+            res.json({
+                success: false,
                 message: "Resource not found with id " + req.params.id
             });
+            return
         }
-        return res.status(500).send({
-            message: "Error updating resource with id " + req.params.id
+        res.statusCode = 500;
+        res.json({
+            success: false,
+            message: "Resource not found with id " + req.params.id
         });
     });
 };
@@ -116,18 +135,26 @@ exports.delete = (req, res) => {
     }, {new: true})
         .then(note => {
             if(!note) {
-                return res.status(404).send({
-                    message: "ResourceResource not found with id " + req.params.id
+                res.statusCode = 404;
+                res.json({
+                    success: false,
+                    message: "Resource not found with id " + req.params.id
                 });
+                return
             }
             res.send({message: "Resource deleted successfully!"});
         }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
+            res.statusCode = 404;
+            res.json({
+                success: false,
                 message: "Resource not found with id " + req.params.id
             });
+            return
         }
-        return res.status(500).send({
+        res.statusCode = 500;
+        res.json({
+            success: false,
             message: "Could not delete note with id " + req.params.id
         });
     });

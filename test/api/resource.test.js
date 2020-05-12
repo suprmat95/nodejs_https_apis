@@ -363,7 +363,7 @@ describe('Resource deleting one test', function () {
                             if (err) {
                                 console.log('Error Login: ' + err);
                             } else {
-                                let token = res.body.token
+                                let token = res.body.token;
                                 console.log('Text ' + token); // outputs normal-looking response
                                 chai.request(app)
                                     .delete('/auth/resource/' + cuid())
