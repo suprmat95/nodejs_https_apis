@@ -8,20 +8,37 @@ exports.usersPost = function (req, res) {
     const user = new User({name: req.body.name, password: req.body.password});
     User.findOne({name: req.body.name} , function(err, data){
         if(err){
-            console.log(err);
+            res.statusCode = 400;
+            res.json({
+                success: false,
+                message: 'User post failed! Please check the request'
+            });
             return
         }
         if(data === null) {
-            console.log("No record found");
             user.save(function (err, result) {
-                if (err) return res.send(err);
-                else res.send('OK')
+                if (err){
+                    res.statusCode = 400;
+                    res.json({
+                        success: false,
+                        message: 'Saving failed! Please check the request'
+                    });
+                }
+                else{
+                    res.json({
+                        success: true,
+                        message: 'User post successful!',
+                    });
+                }
             });
             return
         }
         else
             res.statusCode = 403;
-            res.send('Name already in db');
+            res.json({
+            success: false,
+            message: 'Username already in db'
+        });
         // console.log(data[0].name);
     })
 };
