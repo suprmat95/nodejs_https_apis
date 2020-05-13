@@ -9,7 +9,7 @@ exports.create = function (req, res) {
         res.statusCode = 400;
         res.json({
             success: false,
-            message: "Resource content can not be empty"
+            message: "Resource data  can not be empty"
         });
     }
 
@@ -44,15 +44,11 @@ exports.findAll = (req, res) => {
         res.statusCode = 500;
         res.json({
             success: false,
-            message: err.message || "Some error occurred while creating the Resource."
+            message: err.message || "Some error occurred while finding the Resources."
         });
 
 
     });
-};
-
-exports.update = function (req, res) {
-    res.send('Greetings from the Test controller!');
 };
 
 exports.findOne = (req, res) => {
@@ -62,7 +58,7 @@ exports.findOne = (req, res) => {
                 res.statusCode = 404;
                 res.json({
                     success: false,
-                    message: "Note not found with id " + req.params.id
+                    message: "Resource not found with id " + req.params.id
                 });
                 return
             }
@@ -72,7 +68,7 @@ exports.findOne = (req, res) => {
             res.statusCode = 404;
             res.json({
                 success: false,
-                message: "Note not found with id " + req.params.id
+                message: "Resource not found with id " + req.params.id
             });
             return
         }
@@ -91,7 +87,7 @@ exports.update = (req, res) => {
         res.statusCode = 400;
         res.json({
             success: false,
-            message: "Resource content can not be empty"
+            message: "Resource data can not be empty"
         });
         return
     }
@@ -165,7 +161,7 @@ exports.delete = (req, res) => {
         res.statusCode = 500;
         res.json({
             success: false,
-            message: "Could not delete note with id " + req.params.id
+            message: "Could not delete resource with id " + req.params.id
         });
     });
 };
