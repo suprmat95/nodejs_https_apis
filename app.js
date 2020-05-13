@@ -16,7 +16,10 @@ var app = express();
 
 var db ='mongodb://localhost/example';
 
-mongoose.connect(db);
+mongoose.connect(db,{useNewUrlParser: true,  useUnifiedTopology: true });
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
