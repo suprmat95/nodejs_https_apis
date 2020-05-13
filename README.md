@@ -33,22 +33,22 @@
 Following a brief explanation of the available APIs which can be tested simply using software like postman
 1. Users API:
     1. POST to create a new users 
-    ```bash
-        localhost:3000/users 
-    ```
-      body:
-    ```bash
-            {"name": "name","password" : "password"} 
-    ```
+        ```bash
+            localhost:3000/users 
+        ```
+          body:
+        ```bash
+                {"name": "name","password" : "password"} 
+        ```
 2. Login API:
     1. GET to login and to get a valid Token
-    ```bash
-       localhost:3000/auth/login 
-    ```
-      body:
-    ```bash
-       {"name": "name","password" : "password"} 
-    ```
+        ```bash
+           localhost:3000/auth/login 
+        ```
+          body:
+        ```bash
+           {"name": "name","password" : "password"} 
+        ```
 3. Resource API:
 
     All APIs need authentication, after logging, copy the token obtained in the Bearer Token field.
