@@ -65,17 +65,13 @@ exports.checkToken = (req, res, next) => {
     let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
     if (token.startsWith('Bearer ')) {
         // Remove Bearer from string
-        console.log('Start with bearer');
         token = token.slice(7, token.length);
-        console.log(token);
 
     }
 
     if (token) {
         jwt.verify(token, config.secret, (err, decoded) => {
             if (err) {
-                console.log('TOken: ' + token)
-                console.log('error' + err);
                 res.statusCode = 400;
                 res.json({
                     success: false,

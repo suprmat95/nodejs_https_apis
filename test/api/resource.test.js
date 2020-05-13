@@ -32,7 +32,7 @@ describe('Resource creation test', function () {
                             if (err) {
                                 console.log('Error Login: ' + err);
                             } else {
-                                console.log('Text ' + res.body.token); // outputs normal-looking response
+                                console.log('Response ' + res.text); // outputs normal-looking response
                                 chai.request(app)
                                     .post('/auth/resource')
                                     .auth(res.body.token, {type: "bearer"})
@@ -55,61 +55,49 @@ describe('Resource creation test', function () {
             })
     });
 
-    it('Trying to create 2 resource with the same id', function (done) {
+    it('Trying to create two resource with the same id', function (done) {
 
         chai.request(app)
-            .post('/users')
+            .get('/auth/login')
             .send({
                 name: randomName,
                 password: "password"
             })
             .end((err, res) => {
                 if (err) {
-                    console.log('Error creation new user:  ' + err);
+                    console.log('Error Login: ' + err);
                 } else {
+                    let token = res.body.token
                     chai.request(app)
-                        .get('/auth/login')
-                        .send({
-                            name: randomName,
-                            password: "password"
-                        })
+                        .post('/auth/resource')
+                        .auth(token, {type: "bearer"})
+                        .send({id: "id1", data: [{field3: "example"}]})
                         .end((err, res) => {
                             if (err) {
-                                console.log('Error Login: ' + err);
+                                console.log('Error posting resource: ' + err);
                             } else {
-                                console.log('Text ' + res.body.token); // outputs normal-looking response
-                                let token = res.body.token
                                 chai.request(app)
                                     .post('/auth/resource')
                                     .auth(token, {type: "bearer"})
-                                    .send({id:"id1",data: [{field3: "example"}]})
+                                    .send({id: "id1", data: [{field3: "example"}]})
                                     .end((err, res) => {
                                         if (err) {
                                             console.log('Error posting resource: ' + err);
                                         } else {
-                                            chai.request(app)
-                                                .post('/auth/resource')
-                                                .auth(token, {type: "bearer"})
-                                                .send({id:"id1",data: [{field3: "example"}]})
-                                                .end((err, res) => {
-                                                    if (err) {
-                                                        console.log('Error posting resource: ' + err);
-                                                    } else {
-                                                        expect(res).to.have.status(500);
-                                                        expect(res.type, 'application/json');
-                                                        done();
-                                                    }
-                                                });
+                                            console.log('Response ' + res.text); // outputs normal-looking response
+                                            expect(res).to.have.status(500);
+                                            expect(res.type, 'application/json');
+                                            done();
                                         }
                                     });
-
                             }
-                        })
+                        });
+
                 }
-
-
             })
     })
+
+
     it('Trying create a resource with a token not correct', function (done) {
         chai.request(app)
             .post('/auth/resource')
@@ -119,6 +107,7 @@ describe('Resource creation test', function () {
                 if (err) {
                     console.log('Error posting resource: ' + err);
                 } else {
+                    console.log('Response ' + res.text); // outputs normal-looking response
                     expect(res).to.have.status(400);
                     expect(res.type, 'application/json');
                     done();
@@ -155,7 +144,6 @@ describe('Resource getting one test', function () {
                                 console.log('Error Login: ' + err);
                             } else {
                                 let token = res.body.token
-                                console.log('Text ' + token); // outputs normal-looking response
                                 chai.request(app)
                                     .post('/auth/resource')
                                     .auth(token, {type: "bearer"})
@@ -172,6 +160,7 @@ describe('Resource getting one test', function () {
                                                     if (err) {
                                                         console.log('Error get resource: ' + err);
                                                     } else {
+                                                        console.log('Response ' + res.text); // outputs normal-looking response
                                                         expect(res).to.have.status(200);
                                                         expect(res.type, 'application/json');
                                                         done();
@@ -189,47 +178,33 @@ describe('Resource getting one test', function () {
     it('Try getting a resource with id not correct', function (done) {
 
         chai.request(app)
-            .post('/users')
+            .get('/auth/login')
             .send({
                 name: randomName,
                 password: "password"
             })
             .end((err, res) => {
                 if (err) {
-                    console.log('Error creation new user:  ' + err);
+                    console.log('Error Login: ' + err);
                 } else {
+                    let token = res.body.token
                     chai.request(app)
-                        .get('/auth/login')
-                        .send({
-                            name: randomName,
-                            password: "password"
-                        })
+                        .get('/auth/resource/' + cuid())
+                        .auth(token, {type: "bearer"})
                         .end((err, res) => {
                             if (err) {
-                                console.log('Error Login: ' + err);
+                                console.log('Error get resource: ' + err);
                             } else {
-                                let token = res.body.token
-                                console.log('Text ' + token); // outputs normal-looking response
-                                chai.request(app)
-                                    .get('/auth/resource/' + cuid())
-                                    .auth(token, {type: "bearer"})
-                                    .end((err, res) => {
-                                        if (err) {
-                                            console.log('Error get resource: ' + err);
-                                        } else {
-                                            expect(res).to.have.status(404);
-                                            expect(res.type, 'application/json');
-                                            done();
-                                        }
-                                    });
-
+                                console.log('Response ' + res.text); // outputs normal-looking response
+                                expect(res).to.have.status(404);
+                                expect(res.type, 'application/json');
+                                done();
                             }
-                        })
+                        });
+
                 }
-
             })
-
-    })
+    });
 });
 
 describe('Resource updating one test', function () {
@@ -259,7 +234,6 @@ describe('Resource updating one test', function () {
                                 console.log('Error Login: ' + err);
                             } else {
                                 let token = res.body.token;
-                                console.log('Text ' + token); // outputs normal-looking response
                                 chai.request(app)
                                     .post('/auth/resource')
                                     .auth(token, {type: "bearer"})
@@ -277,6 +251,7 @@ describe('Resource updating one test', function () {
                                                     if (err) {
                                                         console.log('Error get resource: ' + err);
                                                     } else {
+                                                        console.log('Response ' + res.text); // outputs normal-looking response
                                                         expect(res).to.have.status(200);
                                                         expect(res.type, 'application/json');
                                                         done();
@@ -294,45 +269,33 @@ describe('Resource updating one test', function () {
     it('Try updating a resource with id not correct', function (done) {
 
         chai.request(app)
-            .post('/users')
+            .get('/auth/login')
             .send({
                 name: randomName,
                 password: "password"
             })
             .end((err, res) => {
                 if (err) {
-                    console.log('Error creation new user:  ' + err);
+                    console.log('Error Login: ' + err);
                 } else {
+                    let token = res.body.token
                     chai.request(app)
-                        .get('/auth/login')
-                        .send({
-                            name: randomName,
-                            password: "password"
-                        })
+                        .put('/auth/resource/' + cuid())
+                        .auth(token, {type: "bearer"})
+                        .send({data: [{field2: "example2"}]})
                         .end((err, res) => {
                             if (err) {
-                                console.log('Error Login: ' + err);
+                                console.log('Error get resource: ' + err);
                             } else {
-                                let token = res.body.token
-                                console.log('Text ' + token); // outputs normal-looking response
-                                chai.request(app)
-                                    .put('/auth/resource/' + cuid())
-                                    .auth(token, {type: "bearer"})
-                                    .send({data: [{field2: "example2"}]})
-                                    .end((err, res) => {
-                                        if (err) {
-                                            console.log('Error get resource: ' + err);
-                                        } else {
-                                            expect(res).to.have.status(404);
-                                            expect(res.type, 'application/json');
-                                            done();
-                                        }
-                                    });
+                                console.log('Response ' + res.text); // outputs normal-looking response
+                                expect(res).to.have.status(404);
+                                expect(res.type, 'application/json');
+                                done();
                             }
-                        })
+                        });
                 }
-
             })
+
 
     })
 });
@@ -365,7 +328,6 @@ describe('Resource deleting one test', function () {
                                 console.log('Error Login: ' + err);
                             } else {
                                 let token = res.body.token;
-                                console.log('Text ' + token); // outputs normal-looking response
                                 chai.request(app)
                                     .post('/auth/resource')
                                     .auth(token, {type: "bearer"})
@@ -382,6 +344,7 @@ describe('Resource deleting one test', function () {
                                                     if (err) {
                                                         console.log('Error get resource: ' + err);
                                                     } else {
+                                                        console.log('Response ' + res.text); // outputs normal-looking response
                                                         expect(res).to.have.status(200);
                                                         expect(res.type, 'application/json');
                                                         done();
@@ -399,44 +362,32 @@ describe('Resource deleting one test', function () {
     it('Try deleting a resource with id not correct', function (done) {
 
         chai.request(app)
-            .post('/users')
+            .get('/auth/login')
             .send({
                 name: randomName,
                 password: "password"
             })
             .end((err, res) => {
                 if (err) {
-                    console.log('Error creation new user:  ' + err);
+                    console.log('Error Login: ' + err);
                 } else {
+                    let token = res.body.token;
                     chai.request(app)
-                        .get('/auth/login')
-                        .send({
-                            name: randomName,
-                            password: "password"
-                        })
+                        .delete('/auth/resource/' + cuid())
+                        .auth(token, {type: "bearer"})
                         .end((err, res) => {
                             if (err) {
-                                console.log('Error Login: ' + err);
+                                console.log('Error get resource: ' + err);
                             } else {
-                                let token = res.body.token;
-                                console.log('Text ' + token); // outputs normal-looking response
-                                chai.request(app)
-                                    .delete('/auth/resource/' + cuid())
-                                    .auth(token, {type: "bearer"})
-                                    .end((err, res) => {
-                                        if (err) {
-                                            console.log('Error get resource: ' + err);
-                                        } else {
-                                            expect(res).to.have.status(404);
-                                            expect(res.type, 'application/json');
-                                            done();
-                                        }
-                                    });
+                                console.log('Response ' + res.text); // outputs normal-looking response
+                                expect(res).to.have.status(404);
+                                expect(res.type, 'application/json');
+                                done();
                             }
-                        })
+                        });
                 }
-
             })
+
 
     })
 });
