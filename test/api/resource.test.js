@@ -11,7 +11,6 @@ let cuid = require('cuid');
 describe('Resource creation test', function () {
     let randomName = Str.random(15);
     it('Create a user, then login and create a resource', function (done) {
-
         chai.request(app)
             .post('/users')
             .send({
@@ -95,8 +94,7 @@ describe('Resource creation test', function () {
 
                 }
             })
-    })
-
+    });
 
     it('Trying create a resource with a token not correct', function (done) {
         chai.request(app)
