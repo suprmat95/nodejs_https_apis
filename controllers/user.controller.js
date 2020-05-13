@@ -1,10 +1,6 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 
-//Simple version, without validation or sanitation
-exports.test = function (req, res) {
-    res.send('Greetings from the Test controller!');
-};
 exports.usersPost = function (req, res) {
     // salt: if specified as a number then a salt will be generated with the specified number of rounds and used
     bcrypt.hash(req.body.password, 10, function (err, hash) {

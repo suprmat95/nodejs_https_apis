@@ -41,6 +41,7 @@ describe('Login test', function () {
 
             })
     });
+
     it('Create a user and then try to login but with a worng password', function (done) {
         chai.request(app)
             .post('/users')
