@@ -110,6 +110,16 @@ exports.update = (req, res) => {
                 return
 
             }
+            if(resource.deleted!=null) {
+                res.statusCode = 404;
+                res.json({
+                    success: false,
+                    message: "Resource deleted at this timestamp " + resource.deleted
+                });
+                return
+
+            }
+
             res.send(resource);
         }).catch(err => {
         if(err.kind === 'ObjectId') {
