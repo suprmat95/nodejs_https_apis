@@ -21,7 +21,7 @@
     ```
 3. Run the server:
     ```bash
-    $ chmod u+x start.sh
+    $ chmod u+x server.sh
     $ ./server.sh
     ```
 4. Optionally, it's possible to chose a port with the command:
