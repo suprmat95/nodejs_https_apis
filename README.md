@@ -97,10 +97,11 @@ Following a brief explanation of the available APIs which can be tested simply u
         ```bash
            {"data": [{"field1": "newValue"}]}
         ```
+        A resource that has been previously deleted cannot be updated.
         **Result:**
         1. `200` OK
         2. `500` Error updating resource with id 
-        3. `404` Resource not found with id 
+        3. `404` Resource not found with id || Resource deleted at this timestamp
         4. `400` Resource data can not be empty
     5.  **DELETE** to delete one resources: 
         ```bash
