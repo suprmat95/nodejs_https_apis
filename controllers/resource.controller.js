@@ -1,11 +1,13 @@
 let jwt = require('jsonwebtoken');
 const Resource = require('../models/resource.model');
+
 let config = require('../config');
 let cuid = require('cuid');
 
 exports.create = function (req, res) {
 // Validate request
-    if(!req.body.data) {
+
+    if(!req.body.data || req.body.data.length === 0) {
         res.statusCode = 400;
         res.json({
             success: false,
@@ -22,6 +24,13 @@ exports.create = function (req, res) {
 
     });
 
+    if(resource.data.length === 0) {
+        res.statusCode = 400;
+        res.json({
+            success: false,
+            message: "Error format in data field"
+        });
+    }
     // Save resource in the database
     resource.save()
         .then(data => {
@@ -83,7 +92,7 @@ exports.findOne = (req, res) => {
 // Update a resource identified by the noteId in the request
 exports.update = (req, res) => {
     // Validate Request
-    if(!req.body.data) {
+    if(!req.body.data || req.body.data.length === 0) {
         res.statusCode = 400;
         res.json({
             success: false,

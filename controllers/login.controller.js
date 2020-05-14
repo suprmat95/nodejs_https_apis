@@ -4,6 +4,14 @@ let config = require('../config');
 const bcrypt = require('bcrypt');
 
 exports.login = function (req, res) {
+    if(req.body.name==null || req.body.password ==null){
+        res.statusCode = 400;
+        res.json({
+            success: false,
+            message: 'Authentication failed! Please check the request'
+        });
+        return
+    }
     User.findOne({name: req.body.name} , function(err, data){
         if(err){
             res.statusCode = 400;
@@ -17,7 +25,7 @@ exports.login = function (req, res) {
             res.statusCode = 403;
             res.json({
                 success: false,
-                message: 'Username not present in db'
+                message: 'Username not present in db or Password doesn t match ! Please check the request'
             });
         }
         else if(data.name === req.body.name) {
@@ -26,7 +34,7 @@ exports.login = function (req, res) {
                     res.statusCode = 400;
                     res.json({
                         success: false,
-                        message: 'Authentication failed! Please check the request'
+                        message: 'Authentication failed! Please check the request format'
                     });
                     return
                 }
@@ -45,10 +53,10 @@ exports.login = function (req, res) {
                     });
                 }
                 else {
-                    res.statusCode = 400;
+                    res.statusCode = 403;
                     res.json({
                         success: false,
-                        message: 'Password doesn t match ! Please check the request'
+                        message: 'Username not present in db or Password doesn t match! Please check the request'
                     });
 
                 }
