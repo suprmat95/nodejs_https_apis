@@ -66,7 +66,7 @@ Following a brief explanation of the available APIs which can be tested simply u
         ```
          **Body:**
         ```bash
-           {"id": "idResource", "data": [{"field1": "exemple"}]}
+           {"id": "idResource", "data": [{"field1": "example"}]}
         ```
         **Result:**
         1. `200` OK
@@ -110,10 +110,10 @@ Following a brief explanation of the available APIs which can be tested simply u
        3. `404` Resource not found with id 
   
 ## Launch the Tests 
-1. Run the test:
+1. Run the tests:
     ```bash
-    $ chmod u+x test.sh
-    $ ./test.sh
+    $ chmod u+x tests.sh
+    $ ./tests.sh
     ```
 
 
