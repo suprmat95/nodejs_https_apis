@@ -7,8 +7,8 @@ const expect = chai.expect;
 const Str = require('@supercharge/strings');
 chai.use(chaiHttp);
 
-describe('User post', function ()  {
-    it('Posting users with diffent name', function (done) {
+describe('[User post]', function ()  {
+    it('1.Creating a user. Posting users with diffent name', function (done) {
        chai.request(app)
            .post('/users')
            .send({
@@ -25,7 +25,7 @@ describe('User post', function ()  {
                done();
            })
     });
-    it('Posting users with same name, testing the check on user name', function (done) {
+    it('2.Error test. Posting two users with the same name, testing the control on user name', function (done) {
         chai.request(app)
             .post('/users')
             .send({

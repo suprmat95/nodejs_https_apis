@@ -115,8 +115,7 @@ Following a brief explanation of the available APIs which can be tested simply u
 ## Launch the Tests 
 1. Run the tests:
     ```bash
-    $ chmod u+x tests.sh
-    $ ./tests.sh
+    $ npm run test
     ```
 
 

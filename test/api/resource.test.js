@@ -8,9 +8,9 @@ const Str = require('@supercharge/strings');
 chai.use(chaiHttp);
 let cuid = require('cuid');
 
-describe('Resource creation test', function () {
+describe('[Test resource creation]', function () {
     let randomName = Str.random(15);
-    it('Create a user, then login and create a resource', function (done) {
+    it('1. Creating a resource. Before create a user, then login and create a resource', function (done) {
         chai.request(app)
             .post('/users')
             .send({
@@ -54,7 +54,7 @@ describe('Resource creation test', function () {
             })
     });
 
-    it('Trying to create two resource with the same id', function (done) {
+    it('2. Creating a resource error test. Trying to create two resource with the same id', function (done) {
 
         chai.request(app)
             .get('/auth/login')
@@ -96,7 +96,7 @@ describe('Resource creation test', function () {
             })
     });
 
-    it('Trying create a resource with a token not correct', function (done) {
+    it('3. Creating a resource error test. Trying create a resource with a token not correct', function (done) {
         chai.request(app)
             .post('/auth/resource')
             .auth('tokennotcorrect', {type: "bearer"})
@@ -115,11 +115,11 @@ describe('Resource creation test', function () {
     })
 });
 
-describe('Resource getting one test', function () {
+describe('[Test get one resource]', function () {
     let randomName = Str.random(15);
     let randomid = cuid();
 
-    it('Create a user, then login and create a resource', function (done) {
+    it('1.Get one resource. Create a user, then login and get a resource by id', function (done) {
 
         chai.request(app)
             .post('/users')
@@ -173,7 +173,7 @@ describe('Resource getting one test', function () {
             })
     });
 
-    it('Try getting a resource with id not correct', function (done) {
+    it('2.Get a resource error test. Try getting a resource with id not correct', function (done) {
 
         chai.request(app)
             .get('/auth/login')
@@ -205,11 +205,11 @@ describe('Resource getting one test', function () {
     });
 });
 
-describe('Resource updating one test', function () {
+describe('[Resource updating one test]', function () {
     let randomName = Str.random(15);
     let randomid = cuid();
 
-    it('Create a user, then login and create a resource', function (done) {
+    it('1.Update a resource. Create a user, then login and update a resource by id', function (done) {
 
         chai.request(app)
             .post('/users')
@@ -264,7 +264,7 @@ describe('Resource updating one test', function () {
             })
     });
 
-    it('Try updating a resource with id not correct', function (done) {
+    it('2.Update a resource error test. Try to update a resource with id not correct', function (done) {
 
         chai.request(app)
             .get('/auth/login')
@@ -299,11 +299,11 @@ describe('Resource updating one test', function () {
 });
 
 
-describe('Resource deleting one test', function () {
+describe('[Resource deleting one test]', function () {
     let randomName = Str.random(15);
     let randomid = cuid();
 
-    it('Creating a user, then login and creating a resource and deleting it', function (done) {
+    it('1. Resource deleting. Creating a user, then login and creating a resource and deleting it', function (done) {
 
         chai.request(app)
             .post('/users')
@@ -357,7 +357,7 @@ describe('Resource deleting one test', function () {
             })
     });
 
-    it('Try deleting a resource with id not correct', function (done) {
+    it('2. Resource deleting error test. Try to delete a resource with id not correct', function (done) {
 
         chai.request(app)
             .get('/auth/login')

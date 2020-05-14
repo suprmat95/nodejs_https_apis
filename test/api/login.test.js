@@ -7,9 +7,9 @@ const expect = chai.expect;
 const Str = require('@supercharge/strings');
 chai.use(chaiHttp);
 
-describe('Login test', function () {
+describe('[Login test]', function () {
     let randomName = Str.random(15)
-    it('Create a user and then login', function (done) {
+    it('1. Create a user and then login', function (done) {
         chai.request(app)
             .post('/users')
             .send({
@@ -42,7 +42,7 @@ describe('Login test', function () {
             })
     });
 
-    it('Create a user and then try to login but with a worng password', function (done) {
+    it('2.Error test. Create a user and then try to login but with a worng password', function (done) {
         chai.request(app)
             .post('/users')
             .send({
@@ -64,7 +64,7 @@ describe('Login test', function () {
                                 console.log('Error Login: ' + err);
                             } else {
                                 console.log('Text ' + res.text); // outputs normal-looking response
-                                expect(res).to.have.status(400);
+                                expect(res).to.have.status(403);
                                 expect(res.type, 'application/json');
                                 done();
                             }
@@ -74,7 +74,7 @@ describe('Login test', function () {
 
             })
     });
-    it('User not present in db', function (done) {
+    it('3.Error test. User not present in db', function (done) {
         chai.request(app)
             .get('/auth/login')
             .send({
