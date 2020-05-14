@@ -10,7 +10,7 @@
     $ npm i -s
     ```
 
-## Launch the `Server` 
+## Launch the Server 
 1. Start MongoDB:
     ```bash
     $ sudo service mongod start    
