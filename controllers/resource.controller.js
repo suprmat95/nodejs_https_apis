@@ -146,6 +146,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     Resource.findOneAndUpdate({id: req.params.id}, {
         data: [],
+        modified: Date.now(),
         deleted: Date.now()
     }, {new: true})
         .then(note => {
