@@ -2,13 +2,21 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 
 exports.usersPost = function (req, res) {
+    if(req.body.name==null || req.body.password ==null){
+        res.statusCode = 400;
+        res.json({
+            success: false,
+            message: 'Request failed! Please check the request'
+        });
+        return
+    }
     // salt: if specified as a number then a salt will be generated with the specified number of rounds and used
     bcrypt.hash(req.body.password, 10, function (err, hash) {
         if (err) {
             res.statusCode = 400;
             res.json({
                 success: false,
-                message: 'Hash failed! Please check the request'
+                message: 'Request failed! Please check the request'
             });
         }
         const user = new User({name: req.body.name, password: hash});
@@ -17,7 +25,7 @@ exports.usersPost = function (req, res) {
                 res.statusCode = 400;
                 res.json({
                     success: false,
-                    message: 'User post failed! Please check the request'
+                    message: 'Request failed! Please check the request'
                 });
                 return
             }
@@ -27,7 +35,7 @@ exports.usersPost = function (req, res) {
                         res.statusCode = 400;
                         res.json({
                             success: false,
-                            message: 'Saving failed! Please check the request'
+                            message: 'Request failed! Please check the request'
                         });
                     } else {
                         res.json({

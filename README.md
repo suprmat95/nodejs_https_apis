@@ -42,7 +42,7 @@ Following a brief explanation of the available APIs which can be tested simply u
         ```
         **Result:**
         1. `200` OK
-        2. `400` User post failed! Please check the request
+        2. `400` Request failed! Please check the request
         3. `403` The name is already present in the db
 2. Login APIs:
     1.  **GET** to login and to get a valid Token:
