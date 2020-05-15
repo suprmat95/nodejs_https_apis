@@ -101,7 +101,7 @@ exports.update = (req, res) => {
         return
     }
     // Find note and update it with the request body
-    Resource.findOneAndUpdate({id: req.params.id}, {
+    Resource.findOneAndUpdate({id: req.params.id, deleted: null}, {
         data: req.body.data,
         modified: Date.now()
     }, {new: true})
@@ -110,16 +110,7 @@ exports.update = (req, res) => {
                 res.statusCode = 404;
                 res.json({
                     success: false,
-                    message: "Resource not found with id " + req.params.id
-                });
-                return
-
-            }
-            if(resource.deleted!=null) {
-                res.statusCode = 404;
-                res.json({
-                    success: false,
-                    message: "Resource deleted at this timestamp " + resource.deleted
+                    message: "Resource not found with id " + req.params.id + " or already deleted"
                 });
                 return
 
@@ -144,7 +135,7 @@ exports.update = (req, res) => {
 };
 // Delete a note with the specified noteId in the request
 exports.delete = (req, res) => {
-    Resource.findOneAndUpdate({id: req.params.id}, {
+    Resource.findOneAndUpdate({id: req.params.id, deleted: null}, {
         data: [],
         modified: Date.now(),
         deleted: Date.now()
@@ -154,18 +145,11 @@ exports.delete = (req, res) => {
                 res.statusCode = 404;
                 res.json({
                     success: false,
-                    message: "Resource not found with id " + req.params.id
+                    message: "Resource not found with id " + req.params.id + " or already deleted"
                 });
                 return
             }
-            if(resource.deleted!=null) {
-                res.statusCode = 404;
-                res.json({
-                    success: false,
-                    message: "Resource with id " + req.params.id + " already deleted at " +resource.deleted
-                });
-                return
-            }
+
             res.send({message: "Resource deleted successfully!"});
         }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {

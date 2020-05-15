@@ -101,7 +101,7 @@ Following a brief explanation of the available APIs which can be tested simply u
         **Result:**
         1. `200` OK
         2. `500` Error updating resource with id 
-        3. `404` Resource not found with id || Resource deleted at this timestamp
+        3. `404` Resource not found with id or already deleted
         4. `400` Resource data can not be empty
     5.  **DELETE** to delete one resources: 
         ```bash
@@ -110,7 +110,7 @@ Following a brief explanation of the available APIs which can be tested simply u
         **Result:**
         1. `200` OK
         2. `500` Error deleting resource with id 
-        3. `404` Resource not found with id || Resource already deleted
+        3. `404` Resource not found with id or already deleted
   
 ## Launch the Tests 
 1. Run the tests:
