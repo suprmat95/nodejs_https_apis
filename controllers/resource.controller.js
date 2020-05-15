@@ -149,12 +149,20 @@ exports.delete = (req, res) => {
         modified: Date.now(),
         deleted: Date.now()
     }, {new: true})
-        .then(note => {
-            if(!note) {
+        .then(resource => {
+            if(!resource) {
                 res.statusCode = 404;
                 res.json({
                     success: false,
                     message: "Resource not found with id " + req.params.id
+                });
+                return
+            }
+            if(resource.deleted!=null) {
+                res.statusCode = 404;
+                res.json({
+                    success: false,
+                    message: "Resource with id " + req.params.id + " already deleted at " +resource.deleted
                 });
                 return
             }

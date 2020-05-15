@@ -110,7 +110,7 @@ Following a brief explanation of the available APIs which can be tested simply u
         **Result:**
         1. `200` OK
         2. `500` Error deleting resource with id 
-        3. `404` Resource not found with id 
+        3. `404` Resource not found with id || Resource already deleted
   
 ## Launch the Tests 
 1. Run the tests:
