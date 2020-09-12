@@ -1,4 +1,4 @@
-# pryv_exercise_3
+# nodejs_https_apis_exercise
 ## Dependencies
 1. Install Node.js and npm:
     ```bash
